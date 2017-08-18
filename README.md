@@ -5,6 +5,7 @@ Documentation:
 https://api.bill.pt
 
 How to use:
+```
 include  '../vendor/autoload.php';
 use EpicBit\BillPhpSdk\Api;
 
@@ -15,3 +16,4 @@ $api->setlog(true);
 $user = json_decode($api->getToken(['email' => "johndoe@example.com", 'password' => 'XXXXX']));
 
 $api->setToken($user->api_token);
+```
