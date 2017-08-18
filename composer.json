@@ -1,0 +1,21 @@
+{
+    "name": "EpicBit/BillPhpSdk",
+    "description": "Simple way to use bill.pt sdk",
+    "license": "MIT",
+    "keywords": ["bill","invoice","bill.pt"],
+    "authors": [
+        {
+            "name": "Carlos Branco",
+            "email": "carlos@epicbit.pt"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "EpicBit\\BillPhpSdk\\": "src"
+        }
+    }
+}
