@@ -1,9 +1,10 @@
 <?php
-use EpicBit\BillPhpSdk;
+namespace EpicBit\BillPhpSdk;
 
 class Api {
 	private $mode = "standard";
 	private $log = false;
+	protected $log_file = 'errorlog.html';
 	private $api_token = "";
 	private $version = '1.0';
 	private $prefix;
@@ -19,13 +20,13 @@ class Api {
 	{
 		$domain = "https://app.bill.pt/";
 		if( $this->mode != "standard" ){
-			$domain = "https://demo.bill.pt/";
+			$domain = "https://dev.bill.pt/";
 		}
 		return $domain . $this->prefix . $url;
 	}
 
 	public function request($method, $url, $params = [])
-	{
+	{		
 		$url  = $this->getModeUrl($url);
 		$params = array_merge($params, ['api_token' => $this->api_token, 'method' => $method]);
 		$content = json_encode($params);
@@ -34,13 +35,24 @@ class Api {
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
 		curl_setopt($curl, CURLOPT_HTTPHEADER,
-		    array(
-		        "Content-type: application/json",
-		        "Content-Length: " . strlen($content),
-		    )
-		);
+			array(
+				"Content-type: application/json",
+				"Content-Length: " . strlen($content),
+				)
+			);
 
-		return curl_exec($curl);
+		$response = curl_exec($curl);
+
+		if($this->log){
+			$this->prettyLog($method, $url, $params, $response);
+		}
+
+		return $response;
+	}
+
+	public function setLog($log)
+	{
+		$this->log = $log;
 	}
 
 	public function setToken($api_token){
@@ -75,11 +87,6 @@ class Api {
 	public function getDeliveryMethods()
 	{
 		return $this->request('GET', 'metodos-expedicao');
-	}
-
-	public function createDeliveryMethod($params)
-	{
-		return $this->request('POST', 'metodos-expedicao', $params);
 	}
 
 	public function createDeliveryMethod($params)
@@ -344,6 +351,124 @@ class Api {
 	{
 		return $this->request('GET', 'movimentos-pendentes/' . $id);
 	}
+
+	public function prettyLog($method, $url, $params, $result)
+	{
+		if(!file_exists($this->log_file)){
+
+			file_put_contents($this->log_file,'<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.css" /><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script><script>
+				jQuery(document).ready(function(){
+					function output(inp) {
+						return inp;
+					}
+
+					function syntaxHighlight(json) {
+						json = json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+						return json.replace(/("(\u[a-zA-Z0-9]{4}|\[^u]|[^\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+							var cls = "number1";
+							if (/^"/.test(match)) {
+								if (/:$/.test(match)) {
+									cls = "key";
+								} else {
+									cls = "string";
+								}
+							} else if (/true|false/.test(match)) {
+								cls = "boolean";
+							} else if (/null/.test(match)) {
+								cls = "null";
+							}
+							return "<span class=\"" + cls + "\">" + match + "</span>";
+						});
+					}
+
+
+					$("pre").each(function(){
+						var div = $(this);
+						var obj = JSON.parse(div.html());
+						var str = JSON.stringify(obj, undefined, 4);
+						div.html(output(syntaxHighlight(str)));
+
+					});
+				});
+			</script><style>
+			pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; color: #fff; background: #212121}
+    .string { color: #FD971F; }
+    .number1 { color: #66D9EF; }
+    .boolean { color: #A6E22E; }
+    .null { color: #F92672; }
+    .key { color: #A6E22E; }
+
+</style>');
+
+
+		}
+
+		$type[0] = $type[1] = "json";
+
+		if($this->isJson($params)){
+			$params_dump = $params;
+		} else {
+			if(is_array($params)){
+				$params_dump = json_encode($params);
+			}else{
+				$type[0] = "dump";
+				ob_start();
+				var_dump($params);
+				$params_dump = ob_get_clean();
+				ob_clean();
+			}
+		}
+
+		
+		if($this->isJson($result)){
+			$result_dump = $result;
+		} else {
+			if(is_array($result)){
+				$result_dump = json_encode($result);
+			} else {
+				$type[1] = "dump";
+				ob_start();
+				var_dump($result);
+				$result_dump = ob_get_clean();
+				ob_clean();
+			}
+		}
+		$date = date("Y-m-d h:i:s");
+		$data = '<div class="container"><div class="box">
+		<div class="control">
+			<div class="tags has-addons">
+				<span class="tag is-warning">' . $method . '</span>
+				<span class="tag is-dark">' . $url . ' - ' . $date .'</span>
+			</div>
+		</div>
+		<hr>
+		<div class="control">
+			<div class="tags has-addons">
+				<span class="tag is-info">Parameters</span>
+				<span class="tag is-black">' . $date . '</span>
+			</div>
+		</div>
+		<pre class="' . $type[0] . '">' . $params_dump . '</pre>
+		<hr>
+		<div class="control">
+			<div class="tags has-addons">
+				<span class="tag is-success">Response</span>
+				<span class="tag is-black">' . $date . '</span>
+			</div>
+		</div>
+		<pre class="' . $type[1] . '">' . $result_dump . '</pre>
+	</div></div><hr>';
+
+	file_put_contents($this->log_file, $data, FILE_APPEND | LOCK_EX);
+}
+
+public function isJson($string) {
+	if(!is_string($string)){
+		return false;
+	}
+	json_decode($string);
+	return (json_last_error() == JSON_ERROR_NONE);
+}
 
 
 }
