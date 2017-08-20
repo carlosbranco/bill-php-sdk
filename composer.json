@@ -1,5 +1,5 @@
 {
-    "name": "EpicBit/BillPhpSdk",
+    "name": "epicbit/bill-php-sdk",
     "description": "Simple way to use bill.pt sdk",
     "license": "MIT",
     "keywords": ["bill","invoice","bill.pt"],
