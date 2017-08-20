@@ -28,26 +28,27 @@ class Api {
 	public function request($method, $url, $params = [])
 	{		
 		$url  = $this->getModeUrl($url);
-		$params = array_merge($params, ['api_token' => $this->api_token, 'method' => $method]);
+		$params = array_merge($params, ['api_token' => $this->api_token,'method' => $method]);
 		$content = json_encode($params);
 		$curl    = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-		curl_setopt($curl, CURLOPT_HTTPHEADER,
-			array(
-				"Content-type: application/json",
-				"Content-Length: " . strlen($content),
-				)
-			);
 
-		$response = curl_exec($curl);
+	    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	    curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+	    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+	    curl_setopt($curl, CURLOPT_HTTPHEADER,
+	    	array(
+	    		"Content-type: application/json",
+	    		"Content-Length: " . strlen($content),
+	    		)
+	    	);
 
-		if($this->log){
-			$this->prettyLog($method, $url, $params, $response);
-		}
+	    $response = curl_exec($curl);
 
-		return $response;
+	    if($this->log){
+	    	$this->prettyLog($method, $url, $params, $response);
+	    }
+
+	    return $response;
 	}
 
 	public function setLog($log)
@@ -320,29 +321,29 @@ class Api {
 
 
 
-	public function getStock($params)
+	public function getStock($params = [])
 	{
 		return $this->request('GET', 'stock', $params);
 	}
 
-	public function getStockSingleItem($params)
+	public function getStockSingleItem($params = [])
 	{
 		return $this->request('GET', 'stock/singular', $params);
 	}
 
-	public function getStockMovements($params)
+	public function getStockMovements($params = [])
 	{
 		return $this->request('GET', 'stock/movimentos', $params);
 	}
 
 
 
-	public function documentsWithPendingMovementsFromContact($params)
+	public function documentsWithPendingMovementsFromContact($params = [])
 	{
 		return $this->request('GET', 'movimentos-pendentes', $params);
 	}
 
-	public function pendingMovementsOfMultipleDocuments($params)
+	public function pendingMovementsOfMultipleDocuments($params = []) 
 	{
 		return $this->request('GET', 'movimentos-pendentes/multiplos', $params);
 	}
@@ -382,7 +383,7 @@ class Api {
 					}
 
 
-					$("pre").each(function(){
+					$("pre.json").each(function(){
 						var div = $(this);
 						var obj = JSON.parse(div.html());
 						var str = JSON.stringify(obj, undefined, 4);
@@ -392,13 +393,13 @@ class Api {
 				});
 			</script><style>
 			pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; color: #fff; background: #212121}
-    .string { color: #FD971F; }
-    .number1 { color: #66D9EF; }
-    .boolean { color: #A6E22E; }
-    .null { color: #F92672; }
-    .key { color: #A6E22E; }
+			.string { color: #FD971F; }
+			.number1 { color: #66D9EF; }
+			.boolean { color: #A6E22E; }
+			.null { color: #F92672; }
+			.key { color: #A6E22E; }
 
-</style>');
+		</style>');
 
 
 		}

@@ -1,1 +1,4 @@
 /vendor
+/tests
+/tests/test.php
+/tests/errorlog.html
