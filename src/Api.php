@@ -48,7 +48,7 @@ class Api {
 	    	$this->prettyLog($method, $url, $params, $response);
 	    }
 
-	    return $response;
+	    return $this->isJson($response) ? json_decode($response) : $response;
 	}
 
 	public function setLog($log)
