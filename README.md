@@ -21,11 +21,10 @@ $api->setlog(true);
 
 ## How to login and get token:
 ```
-$user = json_decode($api->getToken([
+$user = $api->getToken([
 	'email' => "johndoe@example.com",
 	'password' => 'XXXXX'
-	])
-);
+	]);
 
 $api->setToken($user->api_token);
 ```
