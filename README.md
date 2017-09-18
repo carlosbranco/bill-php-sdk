@@ -14,12 +14,12 @@ use EpicBit\BillPhpSdk\Api;
 $api = new Api();
 ```
 Optional parameter (string)
-Valid: standard,portugal,world,dev
 Define what server the API will try to connect. By default  API will try to connect to portuguese server.
 But if you have a international account you would like to do:
 ```
 Example : $api = new Api('world');
 ```
+Valid: standard,portugal,world,dev
 
 ## Turn On LOG: 
 Turn on LOG. Type can be:
@@ -78,7 +78,7 @@ Validate Portuguese Zip Code
 $api->isValidZipCode($zip);
 ```
 
-## Sucess 
+## Success 
 This method will return a boolean. 
 You can check if your last request was valid or not.
 ```
