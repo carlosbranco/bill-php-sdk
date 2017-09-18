@@ -13,10 +13,23 @@ use EpicBit\BillPhpSdk\Api;
 ```
 $api = new Api();
 ```
+Optional parameter (string)
+Valid: standard,portugal,world,dev
+Define what server the API will try to connect. By default  API will try to connect to portuguese server.
+But if you have a international account you would like to do:
+```
+Example : $api = new Api('world');
+```
 
 ## Turn On LOG: 
+Turn on LOG. Type can be:
+file or memory
 ```
-$api->setlog(true);
+$api->setlog(true, $type);
+```
+To return LOG from memory:
+```
+$api->getLogFromMemory();
 ```
 
 ## How to login and get token:
@@ -33,6 +46,46 @@ $api->setToken($user->api_token);
 ```
 $api->setToken($user->api_token);
 ```
+
+## Currency
+Get list of all valid currencies
+```
+$api->getCurrencyList();
+```
+
+## Country
+Get list of all valid countries
+```
+$api->getCountriesList();
+```
+
+## Validate
+Verify if is a valid currency code Example: EUR_€ is valid.
+Just dump the list to get all valid options.
+```
+$api->isValidCurrency($currency); 
+```
+Validate user token (will return a boolean)
+```
+$api->validToken();
+```
+Validate Date time (or any format)
+```
+$api->isValidDateTime($date_time, $format); (by default if you dont pass $format will be : Y-m-d H:i:s")
+```
+Validate Portuguese Zip Code
+```
+$api->isValidZipCode($zip);
+```
+
+## Sucess 
+This method will return a boolean. 
+You can check if your last request was valid or not.
+```
+$api->success();
+```
+
+
 
 ## DocumentType Requests:
 ```
@@ -100,7 +153,7 @@ $api->deleteWarehouse($id);
 
 ## Contacts(clients,suppliers etc) Requests:
 ```
-$api->getContacts();
+$api->getContacts($params);
 $api->getContactWithID($id, $params);
 $api->createContact($params);
 $api->updateContact($id, $params);
@@ -109,7 +162,7 @@ $api->deleteContact($id);
 
 ## Items Requests:
 ```
-$api->getItems();
+$api->getItems($params);
 $api->getItemWithID($id, $params);
 $api->createItem($params);
 $api->updateItem($id, $params);
@@ -127,6 +180,7 @@ $api->communicateBillOfLanding($id);
 $api->addTransportationCodeManually($params);
 $api->emailDocument($params);
 $api->addPrivateNoteToDocument($params);
+$api->convertDocumentWithID($document_id, $convert_to, $data, $date_shipping, $date_delivery);
 ```
 
 ## Stock Requests:
@@ -141,6 +195,12 @@ $api->getStockMovements($params);
 $api->documentsWithPendingMovementsFromContact($params);
 $api->pendingMovementsOfMultipleDocuments($params);
 $api->pendingMovementsOfSingleDocument($id);
+```
+
+## Receipts Requests:
+```
+$api->createReceipt($params);
+$api->createReceiptToDocumentWithID($id, $params);
 ```
 
 ### If you are not sure what params you can use on each request please visit our api doc.
