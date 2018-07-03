@@ -783,6 +783,25 @@ public function createReceiptToDocumentWithID($id, $params = [])
 	return $this->request('POST', 'recibos/pagar/' . $id, $params);
 }
 
+public function setTaxAuthorityLoginInformation($params)
+{
+	return $this->request('POST', 'at/configurar', $params);
+}
+
+public function testTaxAuthorityLogin()
+{
+	return $this->request('POST', 'at/teste-dados-at');
+}
+
+public function taxAuthorityLoginState()
+{
+	return $this->request('POST', 'at/estado-configuracao');
+}
+
+public function taxAuthortiyCommunicationLog($params = [])
+{
+	return $this->request('POST', 'at/registo-comunicacoes', $params);
+}
 
 public function prettyLog($method, $url, $params, $result, $response_time, $type_of_log = 'file')
 {

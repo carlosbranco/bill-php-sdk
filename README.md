@@ -203,5 +203,13 @@ $api->createReceipt($params);
 $api->createReceiptToDocumentWithID($id, $params);
 ```
 
+## Tax Authority Requests:
+```
+$api->setTaxAuthorityLoginInformation($params);
+$api->testTaxAuthorityLogin();
+$api->taxAuthorityLoginState();
+$api->taxAuthortiyCommunicationLog();
+```
+
 ### If you are not sure what params you can use on each request please visit our api doc.
 https://api.bill.pt
