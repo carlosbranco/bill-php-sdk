@@ -211,5 +211,29 @@ $api->taxAuthorityLoginState();
 $api->taxAuthortiyCommunicationLog();
 ```
 
+## Contact Type Requests:
+```
+$api->getContactTypes($params);
+$api->createContactType($params);
+$api->updateContactType($id,$params);
+```
+
+## Document States Requests:
+```
+$api->getDocumentStates($params);
+$api->createDocumentState($params);
+$api->updateDocumentState($id, $params);
+$api->deleteDocumentState($id);
+$api->changeDocumentState($params);
+```
+
+## SMTP Requests:
+```
+$api->getSmtp();
+$api->createSmtp($params);
+$api->deleteSmtp();
+$api->sendSmtpEmailTest($params);
+```
+
 ### If you are not sure what params you can use on each request please visit our api doc.
 https://api.bill.pt

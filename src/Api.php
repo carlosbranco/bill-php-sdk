@@ -803,6 +803,66 @@ public function taxAuthortiyCommunicationLog($params = [])
 	return $this->request('POST', 'at/registo-comunicacoes', $params);
 }
 
+public function getContactTypes($params = [])
+{
+	return $this->request('GET', 'tipos', $params);
+}
+
+public function createContactType($params = [])
+{
+	return $this->request('POST', 'tipos', $params);
+}
+
+public function updateContactType($id, $params = [])
+{
+	return $this->request('PATCH', 'tipos/' . $id, $params);
+}
+
+public function getDocumentStates($params = [])
+{
+	return $this->request('GET', 'estados', $params);
+}
+
+public function createDocumentState($params = [])
+{
+	return $this->request('POST', 'estados', $params);
+}
+
+public function updateDocumentState($id, $params = [])
+{
+	return $this->request('PATCH', 'estados/' . $id, $params);
+}
+
+public function deleteDocumentState($id)
+{
+	return $this->request('DELETE', 'estados/' . $id);
+}
+
+public function changeDocumentState($params = [])
+{
+	return $this->request('POST', 'estados/mudar-estado', $params);
+}
+
+public function getSmtp()
+{
+	return $this->request('GET', 'smtp');
+}
+
+public function createSmtp($params = [])
+{
+	return $this->request('POST', 'smtp', $params);
+}
+
+public function deleteSmtp()
+{
+	return $this->request('DELETE', 'smtp');
+}
+
+public function sendSmtpEmailTest($params = [])
+{
+	return $this->request('POST', 'smtp/email-teste', $params);
+}
+
 public function prettyLog($method, $url, $params, $result, $response_time, $type_of_log = 'file')
 {
 	if($this->log_type == "memory"){
