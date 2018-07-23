@@ -818,6 +818,21 @@ public function updateContactType($id, $params = [])
 	return $this->request('PATCH', 'tipos/' . $id, $params);
 }
 
+public function getItemCategories($params = [])
+{
+	return $this->request('GET', 'categorias', $params);
+}
+
+public function createItemCategory($params = [])
+{
+	return $this->request('POST', 'categorias', $params);
+}
+
+public function updateItemCategory($id, $params = [])
+{
+	return $this->request('PATCH', 'categorias/' . $id, $params);
+}
+
 public function getDocumentStates($params = [])
 {
 	return $this->request('GET', 'estados', $params);
@@ -861,6 +876,27 @@ public function deleteSmtp()
 public function sendSmtpEmailTest($params = [])
 {
 	return $this->request('POST', 'smtp/email-teste', $params);
+}
+
+
+public function getEmailTemplates($params = [])
+{
+	return $this->request('GET', 'email-template', $params);
+}
+
+public function createEmailTemplate($params = [])
+{
+	return $this->request('POST', 'email-template', $params);
+}
+
+public function updateEmailTemplate($id, $params = [])
+{
+	return $this->request('PATCH', 'email-template/' . $id, $params);
+}
+
+public function deleteEmailTemplate($id)
+{
+	return $this->request('DELETE', 'email-template/' . $id);
 }
 
 public function prettyLog($method, $url, $params, $result, $response_time, $type_of_log = 'file')
