@@ -1,4 +1,6 @@
-# bill-php-sdk
+# Bill.pt SDK PHP API
+SDK de PHP de desenvovimento usando a api do website bill.pt. Bill é um software de faturação certificado pela autoridade tributária. Para ter acesso a uma conta de desenvolvimento contacte o suporte. 
+
 A simple helper to use bill.pt API
 
 Documentation:
