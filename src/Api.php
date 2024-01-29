@@ -623,6 +623,11 @@ public function createDocument($params)
 	return $this->request('POST', 'documentos', $params);
 }
 
+public function voidDocument($params)
+{
+	return $this->request('PATCH', 'documentos', $params);
+}
+
 public function deleteDocument($id)
 {
 	return $this->request('DELETE', 'documentos/' . $id);
